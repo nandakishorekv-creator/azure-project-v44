@@ -11,9 +11,9 @@
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
         http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
         http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-        http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+        http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+        http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd">
   <configuration defaultErrorHandler-ref="globalErrorHandler"></configuration>
-  <apikit:config name="apiSalesforceSapiConfig" raml="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="APIKit Router Config"></apikit:config>
   <configuration-properties doc:name="Configuration properties" file="properties/common-properties.yaml"></configuration-properties>
   <secure-properties:config name="Secure_Properties_Config" file="properties/secure-${mule.env}.yaml" key="${encryption.key}" doc:name="Secure Properties Config"></secure-properties:config>
   <http:listener-config name="HTTPS_Listener_config" doc:name="HTTP Listener config" doc:id="https-listener-config">
@@ -25,5 +25,6 @@
   <salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="salesforce-config">
     <salesforce:basic-connection username="${secure::salesforce.username}" password="${secure::salesforce.password}" securityToken="${secure::salesforce.token}" doc:id="doc-e68629d8" url="${salesforce.url}"></salesforce:basic-connection>
   </salesforce:sfdc-config>
+  <apikit:config name="apiSalesforceSapiConfig" raml="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="APIKit Router Config"></apikit:config>
 
 </mule>
