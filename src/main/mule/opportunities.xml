@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+
+  <flow name="post-opportunities" doc:name="post-opportunities" doc:id="post-opportunities-flow">
+    <logger level="INFO" message="Creating Opportunity in Salesforce" doc:name="Logger" doc:id="logger-create-opportunity"></logger>
+    <ee:transform doc:name="Transform to Opportunity" doc:id="transform-to-opportunity">
+      <ee:message doc:id="doc-d43010c9">
+        <ee:set-payload doc:id="doc-c452ea90" resource="dw/transform-to-opportunity-8.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <salesforce:create config-ref="Salesforce_Config" type="Opportunity" doc:name="Create Opportunity" doc:id="salesforce-create-opportunity"></salesforce:create>
+    <ee:transform doc:name="Transform Response" doc:id="transform-create-opp-response">
+      <ee:message doc:id="doc-fe35f228">
+        <ee:set-payload doc:id="doc-d4903342" resource="dw/transform-response-9.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <error-handler ref="globalErrorHandler"></error-handler>
+  </flow>
+
+  <flow name="get-opportunities" doc:name="get-opportunities" doc:id="get-opportunities-flow">
+    <logger level="INFO" message="Retrieving Opportunities from Salesforce" doc:name="Logger" doc:id="logger-get-opportunities"></logger>
+    <salesforce:query config-ref="Salesforce_Config"></salesforce:query>
+    <ee:transform doc:name="Transform Response" doc:id="transform-get-opp-response">
+      <ee:message doc:id="doc-1e4424a4">
+        <ee:set-payload doc:id="doc-1ea5c3cd" resource="dw/transform-response-10.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <error-handler ref="globalErrorHandler"></error-handler>
+  </flow>
+
+  <flow name="put-opportunities" doc:name="put-opportunities" doc:id="put-opportunities-flow">
+    <logger level="INFO" message="#['Updating Opportunity: ' ++ attributes.uriParams.opportunityId]" doc:name="Logger" doc:id="logger-update-opportunity"></logger>
+    <ee:transform doc:name="Transform to Update Opportunity" doc:id="transform-to-update-opp">
+      <ee:message doc:id="doc-b9f35e4a">
+        <ee:set-payload doc:id="doc-4b4551ee" resource="dw/transform-to-update-opportunity-11.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <salesforce:update config-ref="Salesforce_Config" type="Opportunity" doc:name="Update Opportunity" doc:id="salesforce-update-opp"></salesforce:update>
+    <ee:transform doc:name="Transform Response" doc:id="transform-update-opp-response">
+      <ee:message doc:id="doc-4b932f79">
+        <ee:set-payload doc:id="doc-d22a5e54" resource="dw/transform-response-12.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <error-handler ref="globalErrorHandler"></error-handler>
+  </flow>
+
+  <flow name="delete-opportunities" doc:name="delete-opportunities" doc:id="delete-opportunities-flow">
+    <logger level="INFO" message="#['Deleting Opportunity: ' ++ attributes.uriParams.opportunityId]" doc:name="Logger" doc:id="logger-delete-opportunity"></logger>
+    <ee:transform doc:name="Transform to Delete Opportunity" doc:id="transform-to-delete-opp">
+      <ee:message doc:id="doc-74a21eb3">
+        <ee:set-payload doc:id="doc-65fd556c" resource="dw/transform-to-delete-opportunity-13.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <salesforce:delete config-ref="Salesforce_Config" doc:name="Delete Opportunity" doc:id="salesforce-delete-opp"></salesforce:delete>
+    <ee:transform doc:name="Transform Response" doc:id="transform-delete-opp-response">
+      <ee:message doc:id="doc-7381eeff">
+        <ee:set-payload doc:id="doc-2cf7c595" resource="dw/transform-response-14.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <error-handler ref="globalErrorHandler"></error-handler>
+  </flow>
+
+</mule>

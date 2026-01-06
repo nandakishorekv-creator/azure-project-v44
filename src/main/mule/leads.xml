@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+
+  <flow name="post-leads" doc:name="post-leads" doc:id="post-leads-flow">
+    <logger level="INFO" message="Creating Lead in Salesforce" doc:name="Logger" doc:id="logger-create-lead"></logger>
+    <ee:transform doc:name="Transform to Lead" doc:id="transform-to-lead">
+      <ee:message doc:id="doc-fb1cb46b">
+        <ee:set-payload doc:id="doc-d594239e" resource="dw/transform-to-lead-1.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <salesforce:create config-ref="Salesforce_Config" type="Lead" doc:name="Create Lead" doc:id="salesforce-create-lead"></salesforce:create>
+    <ee:transform doc:name="Transform Response" doc:id="transform-create-response">
+      <ee:message doc:id="doc-17303926">
+        <ee:set-payload doc:id="doc-595ced0f" resource="dw/transform-response-2.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <error-handler ref="globalErrorHandler"></error-handler>
+  </flow>
+
+  <flow name="get-leads" doc:name="get-leads" doc:id="get-leads-flow">
+    <logger level="INFO" message="Retrieving Leads from Salesforce" doc:name="Logger" doc:id="logger-get-leads"></logger>
+    <salesforce:query config-ref="Salesforce_Config"></salesforce:query>
+    <ee:transform doc:name="Transform Response" doc:id="transform-get-response">
+      <ee:message doc:id="doc-45437f53">
+        <ee:set-payload doc:id="doc-35925560" resource="dw/transform-response-3.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <error-handler ref="globalErrorHandler"></error-handler>
+  </flow>
+
+  <flow name="put-leads" doc:name="put-leads" doc:id="put-leads-flow">
+    <logger level="INFO" message="#['Updating Lead: ' ++ attributes.uriParams.leadId]" doc:name="Logger" doc:id="logger-update-lead"></logger>
+    <ee:transform doc:name="Transform to Update Lead" doc:id="transform-to-update-lead">
+      <ee:message doc:id="doc-bce03b5a">
+        <ee:set-payload doc:id="doc-1a43ddc3" resource="dw/transform-to-update-lead-4.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <salesforce:update config-ref="Salesforce_Config" type="Lead" doc:name="Update Lead" doc:id="salesforce-update-lead"></salesforce:update>
+    <ee:transform doc:name="Transform Response" doc:id="transform-update-response">
+      <ee:message doc:id="doc-b856bc41">
+        <ee:set-payload doc:id="doc-a1f6ea75" resource="dw/transform-response-5.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <error-handler ref="globalErrorHandler"></error-handler>
+  </flow>
+
+  <flow name="delete-leads" doc:name="delete-leads" doc:id="delete-leads-flow">
+    <logger level="INFO" message="#['Deleting Lead: ' ++ attributes.uriParams.leadId]" doc:name="Logger" doc:id="logger-delete-lead"></logger>
+    <ee:transform doc:name="Transform to Delete Lead" doc:id="transform-to-delete-lead">
+      <ee:message doc:id="doc-239d0e66">
+        <ee:set-payload doc:id="doc-f5c76476" resource="dw/transform-to-delete-lead-6.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <salesforce:delete config-ref="Salesforce_Config" doc:name="Delete Lead" doc:id="salesforce-delete-lead"></salesforce:delete>
+    <ee:transform doc:name="Transform Response" doc:id="transform-delete-response">
+      <ee:message doc:id="doc-e91c8cfa">
+        <ee:set-payload doc:id="doc-ab4f46b3" resource="dw/transform-response-7.dwl"></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <error-handler ref="globalErrorHandler"></error-handler>
+  </flow>
+
+</mule>

@@ -1,0 +1,52 @@
+{
+  "projectName": "azure-project-v44",
+  "artifactId": "azure-project-v44",
+  "version": "1.0.0",
+  "description": "MuleSoft integration: azure-project-v44",
+  "endpoints": [],
+  "connectors": [
+    "secure-properties",
+    "http",
+    "tls",
+    "salesforce"
+  ],
+  "flows": [
+    {
+      "name": "post-leads",
+      "type": "flow"
+    },
+    {
+      "name": "get-leads",
+      "type": "flow"
+    },
+    {
+      "name": "put-leads",
+      "type": "flow"
+    },
+    {
+      "name": "delete-leads",
+      "type": "flow"
+    },
+    {
+      "name": "post-opportunities",
+      "type": "flow"
+    },
+    {
+      "name": "get-opportunities",
+      "type": "flow"
+    },
+    {
+      "name": "put-opportunities",
+      "type": "flow"
+    },
+    {
+      "name": "delete-opportunities",
+      "type": "flow"
+    }
+  ],
+  "userPrompt": "",
+  "generatedAt": "2026-01-06T11:58:38.624Z",
+  "generatorVersion": "1.0.0",
+  "hasErrorHandlers": true,
+  "hasMUnitTests": true
+}
